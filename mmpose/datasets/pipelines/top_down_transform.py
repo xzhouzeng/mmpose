@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import cv2
 import numpy as np
+# from PIL import Image
 
 from mmpose.core.post_processing import (affine_transform, fliplr_joints,
                                          get_affine_transform, get_warp_matrix,
@@ -249,6 +250,11 @@ class TopDownAffine:
         results['img'] = img
         results['joints_3d'] = joints_3d
         results['joints_3d_visible'] = joints_3d_visible
+
+        # 保存仿射后的图片看效果
+
+        # img2 = Image.fromarray(img)
+        # img2.save('vis_results/mytest/save1.png')
 
         return results
 

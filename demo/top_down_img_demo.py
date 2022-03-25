@@ -80,10 +80,10 @@ def main():
     # process each image
     for i in range(len(img_keys)):
         # get bounding box annotations
-        image_id = img_keys[i]
-        image = coco.loadImgs(image_id)[0]
+        image_id = img_keys[i]  # such as id:785
+        image = coco.loadImgs(image_id)[0]  # dict
         image_name = os.path.join(args.img_root, image['file_name'])
-        ann_ids = coco.getAnnIds(image_id)
+        ann_ids = coco.getAnnIds(image_id)  # 数组
 
         # make person bounding boxes
         person_results = []
@@ -100,9 +100,9 @@ def main():
             image_name,
             person_results,
             bbox_thr=None,
-            format='xywh',
-            dataset=dataset,
-            dataset_info=dataset_info,
+            format='xywh',  # 左上角x,y
+            dataset=dataset,   # 'TopDownMpiiDataset'
+            dataset_info=dataset_info,   #such as _base_.mpii
             return_heatmap=return_heatmap,
             outputs=output_layer_names)
 

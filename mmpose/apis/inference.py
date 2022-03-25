@@ -144,7 +144,7 @@ class LoadImage:
             raise TypeError('"img_or_path" must be a numpy array or a str or '
                             'a pathlib.Path object')
 
-        results['img'] = img
+        results['img'] = img 
         return results
 
 
@@ -280,7 +280,7 @@ def _inference_single_pose_model(model,
         dataset_name = dataset
 
     batch_data = []
-    for bbox in bboxes:
+    for bbox in bboxes:  # xywh
         center, scale = _box2cs(cfg, bbox)
 
         # prepare data
@@ -325,8 +325,8 @@ def _inference_single_pose_model(model,
     # forward the model
     with torch.no_grad():
         result = model(
-            img=batch_data['img'],
-            img_metas=batch_data['img_metas'],
+            img=batch_data['img'],   # [b,3,h,w]
+            img_metas=batch_data['img_metas'], # [{'image_file': 'mypicture/test-p2.jpg', 'center': ...}]
             return_loss=False,
             return_heatmap=return_heatmap)
 

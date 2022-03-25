@@ -169,13 +169,15 @@ class TopDown(BasePose):
 
         result = {}
 
-        features = self.backbone(img)
+        features = self.backbone(img)  # [R^(1,17,46,46)...]
+
         if self.with_neck:
             features = self.neck(features)
         if self.with_keypoint:
             output_heatmap = self.keypoint_head.inference_model(
-                features, flip_pairs=None)
-
+                features, flip_pairs=None)  # (1,17,46,46)
+        
+        # （左右）翻转后再预测，翻转回来，对称节点热图互换。
         if self.test_cfg.get('flip_test', True):
             img_flipped = img.flip(3)
             features_flipped = self.backbone(img_flipped)
@@ -186,7 +188,7 @@ class TopDown(BasePose):
                     features_flipped, img_metas[0]['flip_pairs'])
                 output_heatmap = (output_heatmap +
                                   output_flipped_heatmap) * 0.5
-
+        
         if self.with_keypoint:
             keypoint_result = self.keypoint_head.decode(
                 img_metas, output_heatmap, img_size=[img_width, img_height])
